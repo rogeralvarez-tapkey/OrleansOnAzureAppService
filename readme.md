@@ -12,7 +12,7 @@ This repository contains a simple solution with an Orleans Silo and an Orleans C
 
 ## Prerequisites
 
-* .NET 6.0
+* .NET 7.0
 * The Azure CLI
 * An Azure subscription
 * PowerShell *(GitHub Actions will replace this prerequisite soon)*
