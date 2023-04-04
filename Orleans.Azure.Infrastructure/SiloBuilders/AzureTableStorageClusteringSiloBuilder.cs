@@ -20,7 +20,6 @@ namespace Orleans.Hosting
                     .AddAzureTableGrainStorageAsDefault(tableStorageOptions => 
                      {
                         tableStorageOptions.ConfigureTableServiceClient(azureStorageConnectionString);
-                        tableStorageOptions.UseJson = true;
                     });
             }
 

@@ -1,3 +1,4 @@
+using Orleans.Configuration;
 using Orleans.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,16 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(10);
     options.Cookie.IsEssential = true;
 });
-builder.Services.AddOrleansClusterClient(builder.Configuration);
+var storageConnectionString = builder.Configuration.GetValue<string>(EnvironmentVariables.AzureStorageConnectionString);
+
+builder.Host.UseOrleansClient((client) =>
+{
+    client.UseAzureStorageClustering(
+            options => options.ConfigureTableServiceClient(storageConnectionString)
+        );
+});
+
+//builder.Services.AddOrleansClusterClient(builder.Configuration);
 
 var app = builder.Build();
 

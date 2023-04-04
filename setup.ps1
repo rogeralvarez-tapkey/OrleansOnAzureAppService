@@ -23,9 +23,9 @@ Write-Host 'Creating Orleans Cluster and deploying code to it ' -ForegroundColor
 az deployment group create --resource-group $resourceBaseName --template-file 'deploy/main.bicep'
 
 Write-Host 'Deploying code ' -ForegroundColor Cyan
-az webapp deploy -n "$($resourceBaseName)-silo" -g $resourceBaseName --src-path silo.zip
-az webapp deploy -n "$($resourceBaseName)-dashboard" -g $resourceBaseName --src-path dashboard.zip
-az webapp deploy -n "$($resourceBaseName)-client" -g $resourceBaseName --src-path client.zip
+az webapp deploy -n "$($resourceBaseName)-silo" -g $resourceBaseName --src-path silo.zip --type=zip
+az webapp deploy -n "$($resourceBaseName)-dashboard" -g $resourceBaseName --src-path dashboard.zip --type=zip
+az webapp deploy -n "$($resourceBaseName)-client" -g $resourceBaseName --src-path client.zip --type=zip
 
 Write-Host 'Orleans Cluster deployed.' -ForegroundColor Cyan
 az webapp restart -n "$($resourceBaseName)-silo" -g $resourceBaseName

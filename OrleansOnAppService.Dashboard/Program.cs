@@ -8,7 +8,9 @@ builder.Host.UseOrleans(siloBuilder =>
 {
     var storageConnectionString = builder.Configuration.GetValue<string>(EnvironmentVariables.AzureStorageConnectionString);
     siloBuilder
-        .HostSiloInAzure(builder.Configuration)
+        .UseAzureStorageClustering(
+            options => options.ConfigureTableServiceClient(storageConnectionString)
+        )
         .UseDashboard(dashboardOptions => dashboardOptions.HostSelf = false);
 });
 

@@ -14,56 +14,57 @@ namespace Orleans.Hosting
 
         public OrleansClusterClientHostedService(ILogger<OrleansClusterClientHostedService> logger, IConfiguration configuration)
         {
-            _logger = logger;
-            _configuration = configuration;
+            //_logger = logger;
+            //_configuration = configuration;
 
-            var clientBuilder = new ClientBuilder();
-            var clusterOptionsClientBuilder = new ClusterNameClientBuilder();
-            var azureStorageSiloClientBuillder = new AzureStorageSiloClientBuillder();
-            var localhostSiloClientBuilder = new LocalhostSiloClientBuilder();
+            //var clientBuilder = new ClientBuilder();
+            //var clusterOptionsClientBuilder = new ClusterNameClientBuilder();
+            //var azureStorageSiloClientBuillder = new AzureStorageSiloClientBuillder();
+            //var localhostSiloClientBuilder = new LocalhostSiloClientBuilder();
 
-            clusterOptionsClientBuilder.SetNextBuilder(azureStorageSiloClientBuillder);
-            azureStorageSiloClientBuillder.SetNextBuilder(localhostSiloClientBuilder);
-            clusterOptionsClientBuilder.Build(clientBuilder, configuration);
-            Client = clientBuilder.Build();
+            //clusterOptionsClientBuilder.SetNextBuilder(azureStorageSiloClientBuillder);
+            //azureStorageSiloClientBuillder.SetNextBuilder(localhostSiloClientBuilder);
+            //clusterOptionsClientBuilder.Build(clientBuilder, configuration);
+            //Client = clientBuilder.Build();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Connecting...");
-            if (Client.IsInitialized) return;
-            await Client.Connect(async error =>
-            {
-                if (--_retries < 0)
-                {
-                    _logger.LogError("Could not connect Orleans Client to the cluster: {@Message}", error.Message);
-                    return false;
-                }
-                else
-                {
-                    _logger.LogWarning(error, "Error Connecting Orleans Client: {@Message}", error.Message);
-                }
+            //_logger.LogInformation("Connecting...");
+            //if (Client.IsInitialized) return;
+            //await Client.Connect(async error =>
+            //{
+            //    if (--_retries < 0)
+            //    {
+            //        _logger.LogError("Could not connect Orleans Client to the cluster: {@Message}", error.Message);
+            //        return false;
+            //    }
+            //    else
+            //    {
+            //        _logger.LogWarning(error, "Error Connecting Orleans Client: {@Message}", error.Message);
+            //    }
 
-                try
-                {
-                    await Task.Delay(1000, cancellationToken);
-                }
-                catch (OperationCanceledException)
-                {
-                    return false;
-                }
+            //    try
+            //    {
+            //        await Task.Delay(1000, cancellationToken);
+            //    }
+            //    catch (OperationCanceledException)
+            //    {
+            //        return false;
+            //    }
 
-                return true;
-            });
+            //    return true;
+            //});
 
-            _logger.LogInformation("Orleans Client Connected {Initialized}", Client.IsInitialized);
+            //_logger.LogInformation("Orleans Client Connected {Initialized}", Client.IsInitialized);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            var cancellation = new TaskCompletionSource<bool>();
-            cancellationToken.Register(() => cancellation.TrySetCanceled(cancellationToken));
-            return Task.WhenAny(Client.Close(), cancellation.Task);
+            throw new NotImplementedException();
+            //var cancellation = new TaskCompletionSource<bool>();
+            //cancellationToken.Register(() => cancellation.TrySetCanceled(cancellationToken));
+            //return Task.WhenAny(Client.Close(), cancellation.Task);
         }
     }
 }

@@ -8,7 +8,10 @@ builder.Host.UseOrleans(siloBuilder =>
 {
     var storageConnectionString = builder.Configuration.GetValue<string>(EnvironmentVariables.AzureStorageConnectionString);
     siloBuilder
-        .HostSiloInAzure(builder.Configuration)
+        .UseAzureStorageClustering(
+            options => options.ConfigureTableServiceClient(storageConnectionString)
+        )
+        .ConfigureEndpoints(siloPort: 20044, gatewayPort: 20045)
         .AddAzureTableGrainStorage(name: "visitorsStore", options => options.ConfigureTableServiceClient(storageConnectionString))
         .AddAzureTableGrainStorage(name: "activeVisitorsStore", options => options.ConfigureTableServiceClient(storageConnectionString));
 });
