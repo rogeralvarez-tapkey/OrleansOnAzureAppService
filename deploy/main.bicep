@@ -68,6 +68,9 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
     name: 'S1'
     capacity: 1
   }
+  properties:{
+    reserved: true
+  }
 }
 
 module silo 'app-service.bicep' = {

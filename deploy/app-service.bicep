@@ -1,16 +1,19 @@
+param location string = resourceGroup().location
 param name string
 param envVars array = []
 param appServicePlanId string
 param vnetSubnetId string
 
-resource app_service 'Microsoft.Web/sites@2021-02-01' = {
+resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: name
   kind: 'app'
-  location: resourceGroup().location
+  location: location
   properties: {
     serverFarmId: appServicePlanId
+    reserved: false
     virtualNetworkSubnetId: vnetSubnetId
     siteConfig: {
+      linuxFxVersion: 'DOTNETCORE|7.0'
       vnetPrivatePortsCount: 2
       webSocketsEnabled: true
       appSettings: envVars
